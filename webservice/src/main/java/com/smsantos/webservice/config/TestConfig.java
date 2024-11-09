@@ -2,6 +2,7 @@ package com.smsantos.webservice.config;
 
 import com.smsantos.webservice.entities.Order;
 import com.smsantos.webservice.entities.User;
+import com.smsantos.webservice.entities.enums.OrderStatus;
 import com.smsantos.webservice.repositories.OrderRepository;
 import com.smsantos.webservice.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,12 @@ public class TestConfig implements CommandLineRunner {
         User u3 = new User(null, "Rodrigo Rodrigues", "rodrigo@gmail.com", "88990902222", "123efgh");
         userRepository.saveAll(Arrays.asList(u1,u2,u3));
 
-        Order order1 = new Order(null, Instant.parse("2024-11-02T15:00:22Z"), u1);
-        Order order2 = new Order(null, Instant.parse("2024-11-03T16:21:22Z"), u1);
-        Order order3 = new Order(null, Instant.parse("2024-11-03T14:23:22Z"), u2);
-        Order order4 = new Order(null, Instant.parse("2024-11-04T11:59:20Z"), u3);
-        orderRepository.saveAll(Arrays.asList(order1, order2, order3, order4));
+        Order order1 = new Order(null, Instant.parse("2024-11-02T15:00:22Z"), OrderStatus.WAITING_PAYMENT,u1);
+        Order order2 = new Order(null, Instant.parse("2024-11-03T16:21:22Z"), OrderStatus.PAID,u1);
+        Order order3 = new Order(null, Instant.parse("2024-11-03T14:23:22Z"), OrderStatus.SHIPPED,u2);
+        Order order4 = new Order(null, Instant.parse("2024-11-04T11:59:20Z"), OrderStatus.DELIVERED,u3);
+        Order order5 = new Order(null, Instant.parse("2024-11-04T11:59:20Z"), OrderStatus.CANCELED,u3);
+        orderRepository.saveAll(Arrays.asList(order1, order2, order3, order4, order5));
 
     }
 }
