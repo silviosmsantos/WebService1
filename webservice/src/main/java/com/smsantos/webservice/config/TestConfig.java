@@ -1,15 +1,9 @@
 package com.smsantos.webservice.config;
 
 import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
-import com.smsantos.webservice.entities.Category;
-import com.smsantos.webservice.entities.Order;
-import com.smsantos.webservice.entities.Product;
-import com.smsantos.webservice.entities.User;
+import com.smsantos.webservice.entities.*;
 import com.smsantos.webservice.entities.enums.OrderStatus;
-import com.smsantos.webservice.repositories.CategoryRepository;
-import com.smsantos.webservice.repositories.OrderRepository;
-import com.smsantos.webservice.repositories.ProductRepository;
-import com.smsantos.webservice.repositories.UserRepository;
+import com.smsantos.webservice.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -34,9 +28,12 @@ public class TestConfig implements CommandLineRunner {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
     @Override
     public void run(String... args) throws Exception {
-        User u1 = new User(null, "Silvio Martins Santos", "smstantos@gmail.com", "88990900000", "12345676");
+        User u1 = new User(null, "Silvio Martins Santos", "smsantos@gmail.com", "88990900000", "12345676");
         User u2 = new User(null, "Joicy Peixoto Dias", "joicy@gmail.com", "88990901111", "1234abcd");
         User u3 = new User(null, "Rodrigo Rodrigues", "rodrigo@gmail.com", "88990902222", "123efgh");
         userRepository.saveAll(Arrays.asList(u1,u2,u3));
@@ -54,13 +51,30 @@ public class TestConfig implements CommandLineRunner {
         Category c3 = new Category(null, "Monitor");
 
 
-        Product p1 = new Product(null, "Samsung Odyssey", "Core i7-13620H, 16GB RAM, 512GB SSD, NVIDIA RTX 3050, 15.6 LED Full HD 144Hz", 5778.00, "www.image.com/asudhasoid1231asdq&");
-        Product p2 = new Product(null, "Samsung Odyssey 2", "Core i9-13620H, 16GB RAM, 512GB SSD, NVIDIA RTX 4050, 17.0 LED Full HD 144Hz", 6878.00, "www.image.com/asudhasoid10910910910");
-        Product p3 = new Product(null, "Samsung Tablet 29 grafit", "256GB, 11, WiFi, Câmera Principal 13MP, Câmera Frontal 12MP, UW,", 5719.00, "www.image.com/10910910910");
-        Product p4 = new Product(null, "Apple iPad Pro", "Wi-Fi de 11 polegadas (Wi-Fi, 512 GB) - Cinzento sideral", 14399.00, "www.image.com/a%bbccc0192839181111%%%kappa");
-        Product p5 = new Product(null, "Samsung Monitor g30", "24 144Hz 1ms AMD FreeSync Premium", 835.99, "www.image.com/a%a901298ahccccas#");
+        Product p1 = new Product(null, "Samsung Odyssey", "Core i7-13620H, 16GB RAM, 512GB SSD, NVIDIA RTX 3050, 15.6 LED Full HD 144Hz", 5778.00, "http://www.image.com/asudhasoid1231asdq&");
+        Product p2 = new Product(null, "Samsung Odyssey 2", "Core i9-13620H, 16GB RAM, 512GB SSD, NVIDIA RTX 4050, 17.0 LED Full HD 144Hz", 6878.00, "http://www.image.com/asudhasoid10910910910");
+        Product p3 = new Product(null, "Samsung Tablet 29 grafit", "256GB, 11, WiFi, Câmera Principal 13MP, Câmera Frontal 12MP, UW,", 5719.00, "http://www.image.com/10910910910");
+        Product p4 = new Product(null, "Apple iPad Pro", "Wi-Fi de 11 polegadas (Wi-Fi, 512 GB) - Cinzento sideral", 14399.00, "http://www.image.com/a%bbccc0192839181111%%%kappa");
+        Product p5 = new Product(null, "Samsung Monitor g30", "24 144Hz 1ms AMD FreeSync Premium", 835.99, "http://www.image.com/a%a901298ahccccas#");
 
         categoryRepository.saveAll(Arrays.asList(c1,c2,c3));
         productRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
+
+        p1.getCategories().add(c1);
+        p2.getCategories().add(c1);
+        p3.getCategories().add(c2);
+        p4.getCategories().add(c2);
+        p5.getCategories().add(c3);
+
+        productRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
+
+        OrderItem oi1 = new OrderItem(order1, p1, 2, p1.getPrice());
+        OrderItem oi2 = new OrderItem(order1, p1, 3, p1.getPrice());
+        OrderItem oi3 = new OrderItem(order2, p2, 5, p2.getPrice());
+        OrderItem oi4 = new OrderItem(order2, p2, 1, p2.getPrice());
+        OrderItem oi5 = new OrderItem(order3, p3, 3, p3.getPrice());
+
+        orderItemRepository.saveAll(Arrays.asList(oi1,oi2, oi3, oi4, oi5));
+
     }
 }
