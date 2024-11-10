@@ -89,6 +89,14 @@ public class Order implements Serializable {
     public Set<OrderItem> getItems(){
         return items;
     }
+    // JAVA EE pattern "GET"
+    public Double getTotal(){
+        double total = 0.0;
+        for(OrderItem orderItem : items){
+            total = total + orderItem.getSubTotal();
+        }
+        return total;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
